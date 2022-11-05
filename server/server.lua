@@ -15,13 +15,6 @@ QBCore.Functions.CreateUseableItem("fishingrod", function(source, item)
     end
 end)
 
-QBCore.Functions.CreateUseableItem("fishicebox", function(source, item)
-    local Player = QBCore.Functions.GetPlayer(source)
-	if Player.Functions.GetItemBySlot(item.slot) ~= nil then
-		TriggerClientEvent('fishing:client:useFishingBox', source, item.info.boxid)  
-    end
-end)
-
 QBCore.Functions.CreateUseableItem("fishinglootbig", function(source, item)
 	local src = source
     local Player = QBCore.Functions.GetPlayer(src)
@@ -333,24 +326,11 @@ RegisterNetEvent('fishing:server:BuyFishingGear', function(args)
 		else
 			TriggerClientEvent('QBCore:Notify', src, "You dont have enough money..", "error")
 		end
-	elseif args == 3 then 
+	else
 		if bankBalance >= Config.BoatAnchorPrice then
 			Player.Functions.RemoveMoney('bank', Config.BoatAnchorPrice, "anchor")
 			Player.Functions.AddItem('anchor', 1, nil, {["quality"] = 100})
 			TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items['anchor'], "add", 1)
-			TriggerClientEvent("doj:client:buyFishingGear", source)
-		else
-			TriggerClientEvent('QBCore:Notify', src, "You dont have enough money..", "error")
-		end
-	else
-		if bankBalance >= Config.BoatAnchorPrice then
-			Player.Functions.RemoveMoney('bank', Config.BoatAnchorPrice, "fishicebox")
-			local info = {
-				boxid = math.random(111,999),
-				boxOwner = Player.PlayerData.charinfo.firstname.." "..Player.PlayerData.charinfo.lastname,
-			}
-			Player.Functions.AddItem('fishicebox', 1, nil, info, {["quality"] = 100})
-			TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items['fishicebox'], "add", 1)
 			TriggerClientEvent("doj:client:buyFishingGear", source)
 		else
 			TriggerClientEvent('QBCore:Notify', src, "You dont have enough money..", "error")

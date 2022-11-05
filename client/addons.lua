@@ -342,15 +342,6 @@ AddEventHandler('doj:client:buyFishingGear', function()
             }
         },
         {
-            header = "Buy Fishing Box",
-            txt = "$"..Config.FishingBoxPrice,
-            params = {
-				isServer = true,
-                event = "fishing:server:BuyFishingGear",
-				args = 4
-            }
-        },
-        {
             header = "Close",
             txt = "",
             params = {
@@ -362,61 +353,60 @@ end)
 
 RegisterNetEvent('doj:client:SellillegalFish')
 AddEventHandler('doj:client:SellillegalFish', function() 
-	QBCore.Functions.TriggerCallback('QBCore:HasItem', function(HasItem)
-		if HasItem then
-			local charinfo = QBCore.Functions.GetPlayerData().charinfo
-			QBCore.Functions.Notify('Welcome, '..charinfo.firstname..' '..charinfo.lastname)
-			exports['qb-menu']:openMenu({
-				{
-					header = "Pearl's Seafood Restaurant",
-					isMenuHeader = true
-				},
-				{
-					header = "Sell Dolphin",
-					txt = "Current Price: $"..Config.dolphinPrice.." each",
-					params = {
-						isServer = true,
-						event = "fishing:server:SellillegalFish",
-						args = 1
-					}
-				},
-				{
-					header = "Sell Tiger Shark",
-					txt = "Current Price: $"..Config.sharktigerPrice.." each",
-					params = {
-						isServer = true,
-						event = "fishing:server:SellillegalFish",
-						args = 2
-					}
-				},
-				{
-					header = "Sell Hammerhead Shark",
-					txt = "Current Price: $"..Config.sharkhammerPrice.." each",
-					params = {
-						isServer = true,
-						event = "fishing:server:SellillegalFish",
-						args = 3
-					}
-				},
-				{
-					header = "Sell Orca",
-					txt = "Current Price: $"..Config.killerwhalePrice.." each",
-					params = {
-						isServer = true,
-						event = "fishing:server:SellillegalFish",
-						args = 4
-					}
-				},
-				{
-					header = "Close",
-					txt = "",
-					params = {
-						event = "qb-menu:closeMenu"
-					}
-				},
-			})
-		else
-			QBCore.Functions.Notify('You cannot sell to us at the moment, sorry for the inconvenience', 'error', 3500)
-		end
-	end, "pearlscard")
+	local HasItem = QBCore.Functions.HasItem('pearlscard')
+    if HasItem then
+        local charinfo = QBCore.Functions.GetPlayerData().charinfo
+        QBCore.Functions.Notify('Welcome, '..charinfo.firstname..' '..charinfo.lastname)
+        exports['qb-menu']:openMenu({
+            {
+                header = "Pearl's Seafood Restaurant",
+                isMenuHeader = true
+            },
+            {
+                header = "Sell Dolphin",
+                txt = "Current Price: $"..Config.dolphinPrice.." each",
+                params = {
+                    isServer = true,
+                    event = "fishing:server:SellillegalFish",
+                    args = 1
+                }
+            },
+            {
+                header = "Sell Tiger Shark",
+                txt = "Current Price: $"..Config.sharktigerPrice.." each",
+                params = {
+                    isServer = true,
+                    event = "fishing:server:SellillegalFish",
+                    args = 2
+                }
+            },
+            {
+                header = "Sell Hammerhead Shark",
+                txt = "Current Price: $"..Config.sharkhammerPrice.." each",
+                params = {
+                    isServer = true,
+                    event = "fishing:server:SellillegalFish",
+                    args = 3
+                }
+            },
+            {
+                header = "Sell Orca",
+                txt = "Current Price: $"..Config.killerwhalePrice.." each",
+                params = {
+                    isServer = true,
+                    event = "fishing:server:SellillegalFish",
+                    args = 4
+                }
+            },
+            {
+                header = "Close",
+                txt = "",
+                params = {
+                    event = "qb-menu:closeMenu"
+                }
+            },
+        })
+    else
+        QBCore.Functions.Notify('You cannot sell to us at the moment, sorry for the inconvenience', 'error', 3500)
+    end
 end)
