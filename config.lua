@@ -30,6 +30,7 @@ Config.PlayerReturnLocation = {
 Config.fishingRodPrice = 50                                     -- Price of a fishing rod
 Config.fishingBaitPrice = 5                                     -- Price of fishing bait
 Config.BoatAnchorPrice = 500                                    -- Price of a Boat Anchor
+Config.FishingBoxPrice = 1000
 
 -- Regular Fish
 Config.mackerelPrice     = 5                                    -- Price of Mackerel
