@@ -68,6 +68,20 @@ RegisterNetEvent('fishing:server:removeFishingBait', function()
     TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items['fishbait'], "remove", 1)
 end)
 
+RegisterNetEvent('fishing:server:removeFishingKey', function()
+	local src = source
+    local Player = QBCore.Functions.GetPlayer(source)
+    Player.Functions.RemoveItem('fishingkey', 1)
+    TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items['fishingkey'], "remove", 1)
+end)
+
+RegisterNetEvent('fishing:server:removeFishingLootBig', function()
+	local src = source
+    local Player = QBCore.Functions.GetPlayer(source)
+    Player.Functions.RemoveItem('fishinglootbig', 1)
+    TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items['fishinglootbig'], "remove", 1)
+end)
+
 RegisterNetEvent("fishing:server:addTackleBox", function()
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)

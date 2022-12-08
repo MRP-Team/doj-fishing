@@ -37,25 +37,24 @@ Config.mackerelPrice     = 5                                    -- Price of Mack
 Config.codfishPrice      = 15                                   -- Price of Cod
 Config.bassPrice         = 35                                   -- Price of Normal Fish
 Config.flounderPrice     = 40                                   -- Price of Flounder
-Config.stingrayPrice     = 50                                   -- Price of Stingrays
+Config.stingrayPrice     = 100                                   -- Price of Stingrays
 
 -- Exotic Fish
 Config.dolphinPrice      = 100                                  -- Price of Dolphins
 Config.sharktigerPrice   = 200                                  -- Price of Tigersharks
-Config.sharkhammerPrice  = 200                                  -- Price of Hammerhead Sharks
-Config.killerwhalePrice  = 500                                  -- Price of Killer whales
+Config.sharkhammerPrice  = 300                                  -- Price of Hammerhead Sharks
+Config.killerwhalePrice  = 400                                  -- Price of Killer whales
 
 -- Rewards
-Config.smallLootboxCash = 100                                  	-- Price of the cash reward for the "Metal Box"
+Config.smallLootboxCash = 500                                  	-- Price of the cash reward for the "Metal Box"
 Config.smallLootboxReward = 'water'                      -- Item reward besides the "Corroded Key"
 
 Config.largeLootboxRewards = {                                  -- Rewards found in the treasure chest (keep price = 0)
-	[1] = { name = "water", price = 0, amount = 1, info = {}, type = "item", slot = 1, },
-	[2] = { name = "water", price = 0, amount = 1, info = {}, type = "item", slot = 2, },
-	[3] = { name = "water", price = 0, amount = 1, info = {}, type = "item", slot = 3, },
-	[4] = { name = "water", price = 0, amount = 1, info = {}, type = "item", slot = 4, },
-	[5] = { name = "water", price = 0, amount = 1, info = {}, type = "item", slot = 5, },
-
+	[1] = { name = "diamond_ring", price = 0, amount = 1, info = {}, type = "item", slot = 1, },
+	[2] = { name = "ruby_ring", price = 0, amount = 1, info = {}, type = "item", slot = 2, },
+	[3] = { name = "sapphire_ring", price = 0, amount = 1, info = {}, type = "item", slot = 3, },
+	[4] = { name = "emerald_ring", price = 0, amount = 1, info = {}, type = "item", slot = 4, },
+	[5] = { name = "whiskey", price = 0, amount = 1, info = {}, type = "item", slot = 5, },
 }
 
 -- [SOURCE: https://github.com/sjpfeiffer/ped_spawner]
