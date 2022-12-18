@@ -9,6 +9,15 @@ Config.TestFish = false											-- Test Fish with commands /startfish or /spaw
 Config.Skillbar = "qb-skillbar"                             	-- Must choose one of the avalible skillbars ["reload-skillbar","np-skillbar","qb-skillbar"]
 Config.targetExport = "qb-target"                               -- The name of the Target export you are using ["qb-target", "qtarget", "bt-target"]
 
+Config.SkillName = "Fishing"
+Config.Levels = {
+	{ maxXP = 10, maxChance = 50, label = "Level 0"},
+	{ maxXP = 30, maxChance = 65, label = "Level 1"},
+	{ maxXP = 60, maxChance = 80, label = "Level 2"},
+	{ maxXP = 100, maxChance = 95, label = "Level 3"},
+	{ maxChance = 100, label = "Level 4"},
+}
+
 Config.PearlsSellsBlip = vector3(-1816.406, -1193.334, 13.305)  -- Blip to sell fish you have caught
 
 Config.BoatSpawnLocation = {

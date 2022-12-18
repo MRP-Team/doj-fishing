@@ -5,17 +5,17 @@ local pause = false
 local pausetimer = 0
 local correct = 0
 local genderNum = 0
-local peds = {} 
+local peds = {}
 
 --============================================================== For testing
 
-if Config.TestFish then 
+if Config.TestFish then
 	RegisterCommand("startfish", function(source)
 		TriggerEvent("fishing:fishstart")
 	end)
 
 	RegisterCommand('spawnfish', function()
-	 	TriggerServerEvent('fishing:server:catch') 
+		TriggerServerEvent('fishing:server:catch', 100)
 	end)
 end
 
@@ -76,8 +76,14 @@ end)
 
 CreateThread(function()
 	while true do
-
-		local wait = math.random(Config.FishingWaitTime.minTime , Config.FishingWaitTime.maxTime)
+		local playerFishingSkill = exports["B1-skillz"]:GetCurrentSkill(Config.SkillName)
+		local waitXpInterval = 0
+		if playerFishingSkill.Current > 100 then
+			waitXpInterval = 10000
+		else
+			waitXpInterval = playerFishingSkill.Current * 100
+		end
+		local wait = math.random(Config.FishingWaitTime.minTime , Config.FishingWaitTime.maxTime) - waitXpInterval
 		Wait(wait)
 		if fishing then
 			pause = true
@@ -170,7 +176,7 @@ RegisterNetEvent('fishing:SkillBar', function(message)
 				end
 			end
 		end
-	elseif Config.Skillbar == "np-skillbar" then 
+	elseif Config.Skillbar == "np-skillbar" then
 		local finished = exports["np-skillbar"]:taskBar(1000,math.random(3,5))
 		if finished ~= 100 then
 			QBCore.Functions.Notify('The Fish Got Away!', 'error')
@@ -191,12 +197,14 @@ RegisterNetEvent('fishing:SkillBar', function(message)
 			loseBait()
 		end)
 	end
-end) 
+end)
 
 RegisterNetEvent('fishing:client:spawnFish', function(args)
 	local time = 10000
 	local args = tonumber(args)
-	if args == 1 then 
+	local skillAmount = 1
+	if args == 1 then
+		skillAmount = 5
 		RequestTheModel("A_C_KillerWhale")
 		local pos = GetEntityCoords(PlayerPedId())
 		local ped = CreatePed(29, `A_C_KillerWhale`, pos.x, pos.y, pos.z, 90.0, true, false)
@@ -205,7 +213,8 @@ RegisterNetEvent('fishing:client:spawnFish', function(args)
 		SetModelAsNoLongerNeeded(`A_C_KillerWhale`)
 		Wait(time)
 		DeletePed(ped)	
-	elseif args == 2 then 
+	elseif args == 2 then
+		skillAmount = 2
 		RequestTheModel("A_C_dolphin")
 		local pos = GetEntityCoords(PlayerPedId())
 		local ped = CreatePed(29, `A_C_dolphin`, pos.x, pos.y, pos.z, 90.0, true, false)
@@ -215,6 +224,7 @@ RegisterNetEvent('fishing:client:spawnFish', function(args)
 		Wait(time)
 		DeletePed(ped)
 	elseif args == 3 then
+		skillAmount = 3
 		RequestTheModel("A_C_sharkhammer")
 		local pos = GetEntityCoords(PlayerPedId())
 		local ped = CreatePed(29, `A_C_sharkhammer`, pos.x, pos.y, pos.z, 90.0, true, false)
@@ -224,6 +234,7 @@ RegisterNetEvent('fishing:client:spawnFish', function(args)
 		Wait(time)
 		DeletePed(ped)
 	elseif args == 4 then
+		skillAmount = 3
 		RequestTheModel("A_C_SharkTiger")
 		local pos = GetEntityCoords(PlayerPedId())
 		local ped = CreatePed(29, `A_C_SharkTiger`, pos.x, pos.y, pos.z, 90.0, true, false)
@@ -233,6 +244,7 @@ RegisterNetEvent('fishing:client:spawnFish', function(args)
 		Wait(time)
 		DeletePed(ped)
 	elseif args == 5 then
+		skillAmount = 2
 		RequestTheModel("A_C_stingray")
 		local pos = GetEntityCoords(PlayerPedId())
 		local ped = CreatePed(29, `A_C_stingray`, pos.x, pos.y, pos.z, 90.0, true, false)
@@ -242,6 +254,7 @@ RegisterNetEvent('fishing:client:spawnFish', function(args)
 		Wait(time)
 		DeletePed(ped)
 	else
+		skillAmount = 1
 		RequestTheModel("a_c_fish")
 		local pos = GetEntityCoords(PlayerPedId())
 		local ped = CreatePed(29, `a_c_fish`, pos.x, pos.y, pos.z, 90.0, true, false)
@@ -251,18 +264,19 @@ RegisterNetEvent('fishing:client:spawnFish', function(args)
 		Wait(time)
 		DeletePed(ped)
 	end
+	exports["B1-skillz"]:UpdateSkill(Config.SkillName, skillAmount)
 end)
 
 RegisterNetEvent('fishing:client:useFishingBox', function(BoxId)
 	TriggerServerEvent("inventory:server:OpenInventory", "stash", 'FishingBox_'..BoxId, {maxweight = 18000000, slots = 250})
-	TriggerEvent("inventory:client:SetCurrentStash", 'FishingBox_'..BoxId) 
-end) 
+	TriggerEvent("inventory:client:SetCurrentStash", 'FishingBox_'..BoxId)
+end)
 
 RegisterNetEvent('fishing:fishstart', function()
 	local playerPed = PlayerPedId()
-	local pos = GetEntityCoords(playerPed) 
-	if IsPedSwimming(playerPed) then return QBCore.Functions.Notify("You can't be swimming and fishing at the same time.", "error") end 
-	if IsPedInAnyVehicle(playerPed) then return QBCore.Functions.Notify("You need to exit your vehicle to start fishing.", "error") end 
+	local pos = GetEntityCoords(playerPed)
+	if IsPedSwimming(playerPed) then return QBCore.Functions.Notify("You can't be swimming and fishing at the same time.", "error") end
+	if IsPedInAnyVehicle(playerPed) then return QBCore.Functions.Notify("You need to exit your vehicle to start fishing.", "error") end
 	if GetWaterHeight(pos.x, pos.y, pos.z-2, pos.z - 3.0)  then
 		local time = 1000
 		QBCore.Functions.Notify('Using Fishing Rod', 'primary', time)
@@ -278,34 +292,34 @@ RegisterNetEvent('doj:client:ReturnBoat', function(args)
 	local ped = PlayerPedId()
 	local args = tonumber(args)
 	if IsPedInAnyVehicle(ped) then
-		if args == 1 then 
-			local boat = GetVehiclePedIsIn(ped,true) 
+		if args == 1 then
+			local boat = GetVehiclePedIsIn(ped,true)
 			QBCore.Functions.DeleteVehicle(boat)
-			SetEntityCoords(ped, Config.PlayerReturnLocation.LaPuerta.x, Config.PlayerReturnLocation.LaPuerta.y, Config.PlayerReturnLocation.LaPuerta.z, 0, 0, 0, false) 
+			SetEntityCoords(ped, Config.PlayerReturnLocation.LaPuerta.x, Config.PlayerReturnLocation.LaPuerta.y, Config.PlayerReturnLocation.LaPuerta.z, 0, 0, 0, false)
 			SetEntityHeading(ped, Config.PlayerReturnLocation.LaPuerta.w)
 			TriggerServerEvent('fishing:server:returnDeposit')
 		elseif args == 2 then
-			local boat = GetVehiclePedIsIn(ped,true) 
+			local boat = GetVehiclePedIsIn(ped,true)
 			QBCore.Functions.DeleteVehicle(boat)
-			SetEntityCoords(ped, Config.PlayerReturnLocation.PaletoCove.x, Config.PlayerReturnLocation.PaletoCove.y, Config.PlayerReturnLocation.PaletoCove.z, 0, 0, 0, false) 
+			SetEntityCoords(ped, Config.PlayerReturnLocation.PaletoCove.x, Config.PlayerReturnLocation.PaletoCove.y, Config.PlayerReturnLocation.PaletoCove.z, 0, 0, 0, false)
 			SetEntityHeading(ped, Config.PlayerReturnLocation.PaletoCove.w)
 			TriggerServerEvent('fishing:server:returnDeposit')
 		elseif args == 3 then
-			local boat = GetVehiclePedIsIn(ped,true) 
+			local boat = GetVehiclePedIsIn(ped,true)
 			QBCore.Functions.DeleteVehicle(boat)
-			SetEntityCoords(ped, Config.PlayerReturnLocation.ElGordo.x, Config.PlayerReturnLocation.ElGordo.y, Config.PlayerReturnLocation.ElGordo.z, 0, 0, 0, false) 
+			SetEntityCoords(ped, Config.PlayerReturnLocation.ElGordo.x, Config.PlayerReturnLocation.ElGordo.y, Config.PlayerReturnLocation.ElGordo.z, 0, 0, 0, false)
 			SetEntityHeading(ped, Config.PlayerReturnLocation.ElGordo.w)
 			TriggerServerEvent('fishing:server:returnDeposit')
 		elseif args == 4 then
-			local boat = GetVehiclePedIsIn(ped,true) 
+			local boat = GetVehiclePedIsIn(ped,true)
 			QBCore.Functions.DeleteVehicle(boat)
-			SetEntityCoords(ped, Config.PlayerReturnLocation.ActDam.x, Config.PlayerReturnLocation.ActDam.y, Config.PlayerReturnLocation.ActDam.z, 0, 0, 0, false) 
+			SetEntityCoords(ped, Config.PlayerReturnLocation.ActDam.x, Config.PlayerReturnLocation.ActDam.y, Config.PlayerReturnLocation.ActDam.z, 0, 0, 0, false)
 			SetEntityHeading(ped, Config.PlayerReturnLocation.ActDam.w)
 			TriggerServerEvent('fishing:server:returnDeposit')
 		else
-			local boat = GetVehiclePedIsIn(ped,true) 
+			local boat = GetVehiclePedIsIn(ped,true)
 			QBCore.Functions.DeleteVehicle(boat)
-			SetEntityCoords(ped, Config.PlayerReturnLocation.AlamoSea.x, Config.PlayerReturnLocation.AlamoSea.y, Config.PlayerReturnLocation.AlamoSea.z, 0, 0, 0, false) 
+			SetEntityCoords(ped, Config.PlayerReturnLocation.AlamoSea.x, Config.PlayerReturnLocation.AlamoSea.y, Config.PlayerReturnLocation.AlamoSea.z, 0, 0, 0, false)
 			SetEntityHeading(ped, Config.PlayerReturnLocation.AlamoSea.w)
 			TriggerServerEvent('fishing:server:returnDeposit')
 		end
@@ -317,11 +331,11 @@ RegisterNetEvent('doj:client:rentaBoat', function(args)
 	local chance = math.random(1, 20)
 
 	QBCore.Functions.TriggerCallback('fishing:server:checkMoney', function(isSuccess)
-		if isSuccess then 
+		if isSuccess then
 			if chance == 10 then
 				TriggerServerEvent("fishing:server:addTackleBox")
 			end
-			if args == 1 then 
+			if args == 1 then
 				QBCore.Functions.SpawnVehicle(Config.RentalBoat, function(boat)
 					SetVehicleNumberPlateText(boat, "Rent-a-Boat")
 					exports['ps-fuel']:SetFuel(boat, 100.0)
@@ -329,8 +343,8 @@ RegisterNetEvent('doj:client:rentaBoat', function(args)
 					TaskWarpPedIntoVehicle(PlayerPedId(), boat, -1)
 					TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(boat))
 					SetVehicleEngineOn(boat, true, true)
-				end, Config.BoatSpawnLocation.LaPuerta, true) 
-			elseif args == 2 then 
+				end, Config.BoatSpawnLocation.LaPuerta, true)
+			elseif args == 2 then
 				QBCore.Functions.SpawnVehicle(Config.RentalBoat, function(boat)
 					SetVehicleNumberPlateText(boat, "Rent-a-Boat")
 					exports['ps-fuel']:SetFuel(boat, 100.0)
@@ -338,8 +352,8 @@ RegisterNetEvent('doj:client:rentaBoat', function(args)
 					TaskWarpPedIntoVehicle(PlayerPedId(), boat, -1)
 					TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(boat))
 					SetVehicleEngineOn(boat, true, true)
-				end, Config.BoatSpawnLocation.PaletoCove, true) 
-			elseif args == 3 then 
+				end, Config.BoatSpawnLocation.PaletoCove, true)
+			elseif args == 3 then
 				QBCore.Functions.SpawnVehicle(Config.RentalBoat, function(boat)
 					SetVehicleNumberPlateText(boat, "Rent-a-Boat")
 					exports['ps-fuel']:SetFuel(boat, 100.0)
@@ -347,7 +361,7 @@ RegisterNetEvent('doj:client:rentaBoat', function(args)
 					TaskWarpPedIntoVehicle(PlayerPedId(), boat, -1)
 					TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(boat))
 					SetVehicleEngineOn(boat, true, true)
-				end, Config.BoatSpawnLocation.ElGordo, true) 
+				end, Config.BoatSpawnLocation.ElGordo, true)
 			elseif args == 4 then
 				QBCore.Functions.SpawnVehicle(Config.RentalBoat, function(boat)
 					SetVehicleNumberPlateText(boat, "Rent-a-Boat")
@@ -356,7 +370,7 @@ RegisterNetEvent('doj:client:rentaBoat', function(args)
 					TaskWarpPedIntoVehicle(PlayerPedId(), boat, -1)
 					TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(boat))
 					SetVehicleEngineOn(boat, true, true)
-				end, Config.BoatSpawnLocation.ActDam, true) 
+				end, Config.BoatSpawnLocation.ActDam, true)
 			else
 				QBCore.Functions.SpawnVehicle(Config.RentalBoat, function(boat)
 					SetVehicleNumberPlateText(boat, "Rent-a-Boat")
@@ -365,8 +379,8 @@ RegisterNetEvent('doj:client:rentaBoat', function(args)
 					TaskWarpPedIntoVehicle(PlayerPedId(), boat, -1)
 					TriggerEvent("vehiclekeys:client:SetOwner", GetVehicleNumberPlateText(boat))
 					SetVehicleEngineOn(boat, true, true)
-				end, Config.BoatSpawnLocation.AlamoSea, true) 
-			end  
+				end, Config.BoatSpawnLocation.AlamoSea, true)
+			end 
 		end
 	end)
 end)
@@ -374,7 +388,7 @@ end)
 RegisterNetEvent('doj:client:BoatMenu', function(data)
 	local ped = PlayerPedId()
     local inVehicle = IsPedInAnyVehicle(ped)
-	if data.location == 1 then 
+	if data.location == 1 then
         if Config.Fish24hours then
             if inVehicle then
                 ReturnBoatLaPuerta()
@@ -530,6 +544,16 @@ RequestTheModel = function(model)
 	end
 end
 
+local getPlayerMaxChance = function()
+	local playerFishingSkill = exports["B1-skillz"]:GetCurrentSkill(Config.SkillName)
+	for k = 1, #Config.Levels, 1 do
+		if not Config.Levels[k].maxXP or Config.Levels[k].maxXP > playerFishingSkill.Current then
+			return Config.Levels[k].maxChance
+		end
+	end
+	return 50
+end
+
 catchAnimation = function()
 	local ped = PlayerPedId()
 	local animDict = "mini@tennis"
@@ -543,7 +567,7 @@ catchAnimation = function()
 	local time = 1750
 	QBCore.Functions.Notify('Fish Caught!', 'success', time)
 	Wait(time)
-	TriggerServerEvent('fishing:server:catch') 
+	TriggerServerEvent('fishing:server:catch', getPlayerMaxChance())
 	loseBait()
 	if math.random(1, 100) < 50 then
 		TriggerServerEvent('hud:server:RelieveStress', 50)
@@ -583,7 +607,7 @@ fishingRodEntity = function()
     AttachEntityToEntity(rodHandle, ped, bone, 0.1, 0.05, 0, 80.0, 120.0, 160.0, true, true, false, true, 1, true)
 end
 
-endFishing = function() 
+endFishing = function()
 	local ped = PlayerPedId()
     if rodHandle ~= 0 then
 		DeleteObject(rodHandle)
@@ -616,7 +640,7 @@ openedTreasureChest = function()
 	end
 	TriggerServerEvent("fishing:server:removeFishingLootBig")
 	QBCore.Functions.Notify("Treasure chest opened! Be sure to collect all of your loot!!", "success", 7500)
-	local ShopItems = {} 
+	local ShopItems = {}
 	ShopItems.label = "Treasure Chest"
 	ShopItems.items = Config.largeLootboxRewards
 	ShopItems.slots = #Config.largeLootboxRewards
@@ -631,7 +655,7 @@ nearPed = function(model, coords, heading, gender, animDict, animName, scenario)
 
 	if gender == 'male' then
 		genderNum = 4
-	elseif gender == 'female' then 
+	elseif gender == 'female' then
 		genderNum = 5
 	else
 		print("No gender provided! Check your configuration!")
@@ -651,7 +675,7 @@ nearPed = function(model, coords, heading, gender, animDict, animName, scenario)
 		TaskPlayAnim(ped, animDict, animName, 8.0, 0, -1, 1, 0, 0, 0)
 	end
 	if scenario then
-		TaskStartScenarioInPlace(ped, scenario, 0, true) 
+		TaskStartScenarioInPlace(ped, scenario, 0, true)
 	end
 	for i = 0, 255, 51 do
 		Wait(50)
