@@ -36,27 +36,27 @@ Config.PlayerReturnLocation = {
 }
 
 -- Gear
-Config.fishingRodPrice = 50                                     -- Price of a fishing rod
-Config.fishingBaitPrice = 5                                     -- Price of fishing bait
-Config.BoatAnchorPrice = 500                                    -- Price of a Boat Anchor
+Config.fishingRodPrice = 50							-- Price of a fishing rod
+Config.fishingBaitPrice = 5							-- Price of fishing bait
+Config.BoatAnchorPrice = 500						-- Price of a Boat Anchor
 Config.FishingBoxPrice = 1000
 
 -- Regular Fish
-Config.mackerelPrice     = 5                                    -- Price of Mackerel
-Config.codfishPrice      = 15                                   -- Price of Cod
-Config.bassPrice         = 35                                   -- Price of Normal Fish
-Config.flounderPrice     = 40                                   -- Price of Flounder
-Config.stingrayPrice     = 100                                   -- Price of Stingrays
+Config.mackerelPrice     = 50						-- Price of Mackerel
+Config.codfishPrice      = 150					-- Price of Cod
+Config.bassPrice         = 350					-- Price of Normal Fish
+Config.flounderPrice     = 400					-- Price of Flounder
+Config.stingrayPrice     = 1000					-- Price of Stingrays
 
 -- Exotic Fish
-Config.dolphinPrice      = 100                                  -- Price of Dolphins
-Config.sharktigerPrice   = 200                                  -- Price of Tigersharks
-Config.sharkhammerPrice  = 300                                  -- Price of Hammerhead Sharks
-Config.killerwhalePrice  = 400                                  -- Price of Killer whales
+Config.dolphinPrice      = 1000					-- Price of Dolphins
+Config.sharktigerPrice   = 2000					-- Price of Tigersharks
+Config.sharkhammerPrice  = 3000					-- Price of Hammerhead Sharks
+Config.killerwhalePrice  = 4000					-- Price of Killer whales
 
 -- Rewards
-Config.smallLootboxCash = 500                                  	-- Price of the cash reward for the "Metal Box"
-Config.smallLootboxReward = 'whiskey'                      -- Item reward besides the "Corroded Key"
+Config.smallLootboxCash = 5000					-- Price of the cash reward for the "Metal Box"
+Config.smallLootboxReward = 'whiskey'		-- Item reward besides the "Corroded Key"
 
 Config.largeLootboxRewards = {                                  -- Rewards found in the treasure chest (keep price = 0)
 	[1] = { name = "diamond_ring", price = 0, amount = 1, info = {}, type = "item", slot = 1, },
