@@ -43,20 +43,20 @@ Config.FishingBoxPrice = 1000
 
 -- Regular Fish
 Config.mackerelPrice     = 50						-- Price of Mackerel
-Config.codfishPrice      = 150					-- Price of Cod
-Config.bassPrice         = 350					-- Price of Normal Fish
+Config.codfishPrice      = 100					-- Price of Cod
+Config.bassPrice         = 200					-- Price of Normal Fish
 Config.flounderPrice     = 400					-- Price of Flounder
-Config.stingrayPrice     = 1000					-- Price of Stingrays
+Config.stingrayPrice     = 800					-- Price of Stingrays
 
 -- Exotic Fish
 Config.dolphinPrice      = 1000					-- Price of Dolphins
-Config.sharktigerPrice   = 2000					-- Price of Tigersharks
-Config.sharkhammerPrice  = 3000					-- Price of Hammerhead Sharks
-Config.killerwhalePrice  = 4000					-- Price of Killer whales
+Config.sharktigerPrice   = 1500					-- Price of Tigersharks
+Config.sharkhammerPrice  = 1500					-- Price of Hammerhead Sharks
+Config.killerwhalePrice  = 2000					-- Price of Killer whales
 
 -- Rewards
-Config.smallLootboxCash = 5000					-- Price of the cash reward for the "Metal Box"
-Config.smallLootboxReward = 'whiskey'		-- Item reward besides the "Corroded Key"
+Config.smallLootboxCash = 1000					-- Price of the cash reward for the "Metal Box"
+Config.smallLootboxReward = 'fishingkey'		-- Item reward besides the "Corroded Key"
 
 Config.largeLootboxRewards = {                                  -- Rewards found in the treasure chest (keep price = 0)
 	[1] = { name = "diamond_ring", price = 0, amount = 1, info = {}, type = "item", slot = 1, },
