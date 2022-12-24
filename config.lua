@@ -56,7 +56,7 @@ Config.killerwhalePrice  = 2000					-- Price of Killer whales
 
 -- Rewards
 Config.smallLootboxCash = 1000					-- Price of the cash reward for the "Metal Box"
-Config.smallLootboxReward = 'fishingkey'		-- Item reward besides the "Corroded Key"
+Config.smallLootboxReward = 'diamond_ring'		-- Item reward besides the "Corroded Key"
 
 Config.largeLootboxRewards = {                                  -- Rewards found in the treasure chest (keep price = 0)
 	[1] = { name = "diamond_ring", price = 0, amount = 1, info = {}, type = "item", slot = 1, },

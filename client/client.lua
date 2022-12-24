@@ -204,7 +204,7 @@ RegisterNetEvent('fishing:client:spawnFish', function(args)
 	local args = tonumber(args)
 	local skillAmount = 1
 	if args == 1 then
-		skillAmount = 5
+		skillAmount = 2
 		RequestTheModel("A_C_KillerWhale")
 		local pos = GetEntityCoords(PlayerPedId())
 		local ped = CreatePed(29, `A_C_KillerWhale`, pos.x, pos.y, pos.z, 90.0, true, false)
@@ -224,7 +224,7 @@ RegisterNetEvent('fishing:client:spawnFish', function(args)
 		Wait(time)
 		DeletePed(ped)
 	elseif args == 3 then
-		skillAmount = 3
+		skillAmount = 2
 		RequestTheModel("A_C_sharkhammer")
 		local pos = GetEntityCoords(PlayerPedId())
 		local ped = CreatePed(29, `A_C_sharkhammer`, pos.x, pos.y, pos.z, 90.0, true, false)
@@ -234,7 +234,7 @@ RegisterNetEvent('fishing:client:spawnFish', function(args)
 		Wait(time)
 		DeletePed(ped)
 	elseif args == 4 then
-		skillAmount = 3
+		skillAmount = 2
 		RequestTheModel("A_C_SharkTiger")
 		local pos = GetEntityCoords(PlayerPedId())
 		local ped = CreatePed(29, `A_C_SharkTiger`, pos.x, pos.y, pos.z, 90.0, true, false)
